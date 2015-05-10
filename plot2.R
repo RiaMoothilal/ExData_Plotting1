@@ -14,13 +14,16 @@ NeedData <- subset(data, NewDate == "2007-02-01" | NewDate == "2007-02-02")
 #create new variable called datetime
 NeedData$datetime <- strptime(paste(NeedData$NewDate,NeedData$Time), "%Y-%m-%d %H:%M:%S")
 
-#Plot 1
-#Calls the hist function but also needs to convert the Global_active_power
-#variable from a factor to numeric. Hist requires numeric. In order to fo
-#from factor to numeric it first needs to be converted to a character so as not
-#to return the factor levels as the value
-hist(as.numeric(as.character(NeedData$Global_active_power)), col = "red", 
-     main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
+#plot 2
+#create vector of dates with class = POSIXct
+WD <- as.POSIXct(NeedData$datetime)
 
-dev.copy(png, file = "plot1.png") #copies plot to a png file
+#create vector of global active power
+GAP <- as.numeric(as.character(NeedData$Global_active_power))
+
+#plot diagram with type = line and set y label 
+plot(WD, GAP, type = "l", ylab = "Global Active Power (kilowatts)")
+
+#copy to png file
+dev.copy(png, file = "plot2.png") #copies plot to a png file
 dev.off() #Always close the PNG device!!!!!!
